@@ -1,4 +1,4 @@
-# Auto Train CNN
+# AutoTrainCNN
 ## Prerequisites
 1. python+pytorch+cifar10
 
