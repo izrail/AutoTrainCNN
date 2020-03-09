@@ -1,4 +1,4 @@
-# Neural Architectures Search
+# Auto Train CNN
 ## Prerequisites
 1. python+pytorch+cifar10
 
@@ -15,3 +15,15 @@
 
 网络文件名字:
     0.0file.txt 0.1file.txt 0.2file.txt 0.3file.txt 0.4file.txt
+网络文件内容：
+
+    0 1 1 0 0 1 0 
+    0 0 0 1 0 1 0 
+    0 0 0 0 1 0 0 
+    0 0 0 0 0 0 1 
+    0 0 0 0 0 0 1 
+    0 0 0 0 0 0 1 
+    0 0 0 0 0 0 0 
+
+第n行m列上的数字代表第n个节点和第m个节点的连接方式。1是连接，0是不连接。
+本代码只支持5个stage的网络连接。因此网络文件为5个。
