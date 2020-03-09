@@ -1,8 +1,11 @@
 # AutoTrainCNN
+
 ## Prerequisites
+
 1. python+pytorch+cifar10
 
 ## Setting
+
 1. 把cifar10数据下载到data文件夹下
 2. 把想要训练的网络连接方式文件放到net文件下
 3. 配置网络连接方式（见文末）
