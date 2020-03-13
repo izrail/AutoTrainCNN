@@ -19,7 +19,7 @@ from thop import profile
 graph=[]
 #print(sys.argv[1]+"\n")
 for i in range(5):
-    a = numpy.loadtxt("./python/net/4"+"."+str(i)+"file.txt")
+    a = numpy.loadtxt("E:/python/net/"+str(3)+"."+str(i)+"file.txt")
     graph.append(a.astype(np.int32))
 
 # torchvision输出的是PILImage，值的范围是[0, 1]。
@@ -44,24 +44,63 @@ cfg = {
 initNet = [64, 64, 64, 64, 64, 64, 64, 'M', 128 ,128 ,128 ,128 ,128 ,128 , 128, 'M',
          256, 256 ,256 ,256 ,256 ,256 ,256 , 256, 'M', 512, 512 ,512 ,512 ,512 ,512 ,512 , 512, 'M',
           512, 512 ,512 ,512 ,512 ,512 ,512 , 512, 'M']
-initNum = []
 class Net(nn.Module):
     # 定义Net的初始化函数，这个函数定义了该神经网络的基本结构
     def __init__(self):
         super(Net, self).__init__()  # 复制并使用Net的父类的初始化方法，即先运行nn.Module的初始化函数
         self.convList=[]
+        #self.convList.append(nn.Conv2d(3,64,3,padding=1))
         preLayer = 3
-        layerNum = 0
-        for i,layer in enumerate(initNet):
+        for layer in initNet:
             if layer =='M':
                 pass
-                initNum.append(layerNum)
-                layerNum = 0
             else:
                 self.convList.append(nn.Conv2d(preLayer,layer,3,padding=1))
-                layerNum = layerNum + 1
                 preLayer = layer
 
+
+        #self.convList.append(nn.Conv2d(64,64,3,padding=1))
+        #self.convList.append(nn.Conv2d(64,64,3,padding=1))
+        #self.convList.append(nn.Conv2d(64,64,3,padding=1))
+        #self.convList.append(nn.Conv2d(64,64,3,padding=1))
+        #self.convList.append(nn.Conv2d(64,64,3,padding=1))
+        #self.convList.append(nn.Conv2d(64,64,3,padding=1))
+        
+        self.convList.append(nn.Conv2d(64,128,3,padding=1))
+        #self.convList.append(nn.Conv2d(128,128,3,padding=1))
+        #self.convList.append(nn.Conv2d(128,128,3,padding=1))
+        #self.convList.append(nn.Conv2d(128,128,3,padding=1))
+        #self.convList.append(nn.Conv2d(128,128,3,padding=1))
+        #self.convList.append(nn.Conv2d(128,128,3,padding=1))
+        #self.convList.append(nn.Conv2d(128,128,3,padding=1))
+        
+        self.convList.append(nn.Conv2d(128,256,3,padding=1))
+        #self.convList.append(nn.Conv2d(256,256,3,padding=1))
+        #self.convList.append(nn.Conv2d(256,256,3,padding=1))
+        #self.convList.append(nn.Conv2d(256,256,3,padding=1))
+        #self.convList.append(nn.Conv2d(256,256,3,padding=1))
+        #self.convList.append(nn.Conv2d(256,256,3,padding=1))
+        #self.convList.append(nn.Conv2d(256,256,3,padding=1))
+        #self.convList.append(nn.Conv2d(256,256,3,padding=1))
+        
+        self.convList.append(nn.Conv2d(256,512,3,padding=1))
+        #self.convList.append(nn.Conv2d(512,512,3,padding=1))
+        #self.convList.append(nn.Conv2d(512,512,3,padding=1))
+        #self.convList.append(nn.Conv2d(512,512,3,padding=1))
+        #self.convList.append(nn.Conv2d(512,512,3,padding=1))
+        #self.convList.append(nn.Conv2d(512,512,3,padding=1))
+        #self.convList.append(nn.Conv2d(512,512,3,padding=1))
+        #self.convList.append(nn.Conv2d(512,512,3,padding=1))
+        
+        
+        #self.convList.append(nn.Conv2d(512,512,3,padding=1))
+        #self.convList.append(nn.Conv2d(512,512,3,padding=1))
+        #self.convList.append(nn.Conv2d(512,512,3,padding=1))
+        #self.convList.append(nn.Conv2d(512,512,3,padding=1))
+        #self.convList.append(nn.Conv2d(512,512,3,padding=1))
+        #self.convList.append(nn.Conv2d(512,512,3,padding=1))
+        #self.convList.append(nn.Conv2d(512,512,3,padding=1))
+        #self.convList.append(nn.Conv2d(512,512,3,padding=1))
         
         self.norm64 = nn.BatchNorm2d(64)
         self.norm128 = nn.BatchNorm2d(128)
@@ -73,32 +112,7 @@ class Net(nn.Module):
         
     #修改网络模型
     def modify(self):
-        stageNum = 0
-        index = 0
-        distance = 0
-        for i, layer in enumerate(initNet):
-            '''for i in range(7):
-                myCount = 0
-                for j in range(7):
-                    myCount +=graph[stageNum][j][i]
-                count.append(myCount)'''
-            if index == 0:
-                index = index + 1 
-                continue
-            count = 0 
-            for j in range(7):
-                count += graph[stageNum][j][index]
-
-            if count == 0:
-                self.convList[i - stageNum] = nn.Conv2d(layer,layer,3,padding = 1)
-            else:
-                self.convList[i - stageNum] = nn.Conv2d(layer*(count - 1) + layer,layer,3,padding = 1)
-            if layer == 'M':
-                stageNum = stageNum + 1
-                index = 0
-            else:
-                index = index + 1
-        '''count=[]
+        count=[]
         for i in range(7):
             myCount=0
             for j in range(7):
@@ -161,9 +175,8 @@ class Net(nn.Module):
                 self.convList[i+30] = nn.Conv2d(512,512,3,padding=1)
             else:
                 self.convList[i+30] = nn.Conv2d(512*(count[i]-1)+512,512,3,padding=1)
-                #print("stage1:",512*(count[i]-1)+512)'''
-
-
+                #print("stage1:",512*(count[i]-1)+512)
+          
     def forward(self, x):
         xList=[]
         xList.append(F.relu(self.norm64(self.convList[0](x))))
